@@ -40,19 +40,23 @@ const ModalBody = styled.div`
   width: 80%;
   height: auto;
   padding: 1rem;
+  padding-top: 2rem;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
   & > button {
+    position: absolute;
     display: block;
     border: none;
     border-radius: 4px;
-    background-color: var(--color-primary);
+    background-color: transparent;
     color: var(--color-text);
     padding: 0.25rem 0.5rem;
     margin-bottom: 0.5rem;
     cursor: pointer;
+    top: 0.25rem;
+    right: 0.25rem;
 
     &:hover {
       background-color: var(--color-tertiary);
