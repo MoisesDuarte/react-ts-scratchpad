@@ -50,17 +50,17 @@ const ModalBody = styled.div`
     display: block;
     border: none;
     border-radius: 4px;
-    background-color: transparent;
-    color: var(--color-text);
+    background-color: var(--color-tertiary);
+    color: var(--color-secondary);
     padding: 0.25rem 0.5rem;
     margin-bottom: 0.5rem;
     cursor: pointer;
-    top: 0.25rem;
-    right: 0.25rem;
+    top: -2rem;
+    right: -2rem;
 
     &:hover {
-      background-color: var(--color-tertiary);
-      color: var(--color-primary);
+      background-color: var(--color-secondary);
+      color: var(--color-tertiary);
     }
   }
 `

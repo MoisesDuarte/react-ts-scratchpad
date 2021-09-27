@@ -10,3 +10,6 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+
+# Distribution builds
+/dist
