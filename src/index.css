@@ -6,6 +6,8 @@
   --color-secondary-accent: #0e1013;
   --color-tertiary: #ECF0F1;
   --color-text: #ECF0F1;
+  
+  --color-danger: #ff0000;
 }
 
 * {

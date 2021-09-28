@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, MouseEvent } from 'react'
 import styled from 'styled-components'
 import { RiDeleteBin2Fill } from "react-icons/ri";
 
@@ -13,10 +13,20 @@ const App = () => {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [stories, setStories] = useState<Story[]>([
     {
-      title: 'Title',
+      title: 'Title A',
       date: '00/00/00',
       body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    }
+    },
+    {
+      title: 'Title B',
+      date: '00/00/00',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    {
+      title: 'Title C',
+      date: '00/00/00',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
   ]);
 
   function onAddStory(e: FormEvent): void {
@@ -28,8 +38,8 @@ const App = () => {
       body: { value: string };
     };
 
-    setStories((prevProps) => ([
-      ...prevProps,
+    setStories((prevStories) => ([
+      ...prevStories,
       {
         title: target.title.value,
         date: target.date.value,
@@ -43,6 +53,16 @@ const App = () => {
   function onPreviewStory(index: number): void {
     setCurrentStoryIndex(index);
     setShowPreviewModal(true);
+  }
+
+  function onDeleteStory(e: MouseEvent, deleteIndex: number) {
+    e.stopPropagation();
+
+    if (window.confirm('Do you really want to delete this story?')) {
+      setStories((prevStories,) => ([
+        ...prevStories.filter((e, index) => index !== deleteIndex)
+      ]));
+    }
   }
 
   return (
@@ -59,8 +79,8 @@ const App = () => {
           { 
             stories.length ? (stories.map((story, index) => {
               return (
-                <StoryItem onClick={() => onPreviewStory(index)}>
-                  <button className="delete-button">
+                <StoryItem onClick={() => onPreviewStory(index)} key={index}>
+                  <button className="delete-button" onClick={(e) => onDeleteStory(e, index)}>
                     <RiDeleteBin2Fill />
                   </button>
                   <h1>{ story.title }</h1>
@@ -145,6 +165,11 @@ const StoryItem = styled.div`
       border: none;
       background-color: transparent;
       color: var(--color-text);
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-danger);
+      }
     }
 
     h1 {
