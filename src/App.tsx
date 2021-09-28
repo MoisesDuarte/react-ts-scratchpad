@@ -7,6 +7,25 @@ import StoryCreateModal from './components/StoryCreateModal'
 const App = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [stories, setStories] = useState([]);
+
+  function onAddStory(e: React.FormEvent): void {
+    e.preventDefault();
+
+    const target = e.target as typeof e.target & {
+      title: { value: string };
+      date: { value: string };
+      body: { value: string };
+    };
+
+    const newStory = {
+      title: target.title.value,
+      date: target.date.value,
+      body: target.body.value
+    }
+
+    alert(JSON.stringify(newStory, null, 2));
+  }
 
   return (
     <div className="App">
@@ -35,8 +54,20 @@ const App = () => {
           </StoryItem>
         </StoryGrid>
 
-        { showCreateModal ? <StoryCreateModal handleCreateModalClose={() => setShowCreateModal(false)}/> : null }
-        { showPreviewModal ? <StoryPreviewModal handlePreviewModalClose={() => setShowPreviewModal(false) } /> : null }
+        { 
+          showCreateModal ? 
+            <StoryCreateModal 
+              handleCreateModalClose={() => setShowCreateModal(false)}
+              onSubmit={(ev) => { onAddStory(ev) }}
+            /> : null 
+        }
+
+        { 
+          showPreviewModal ? 
+            <StoryPreviewModal 
+              handlePreviewModalClose={() => setShowPreviewModal(false) } 
+            /> : null 
+        }
       </main>
     </div>
   )

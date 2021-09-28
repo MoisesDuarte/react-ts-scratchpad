@@ -3,32 +3,18 @@ import GenericModal from './GenericModal'
 import styled from 'styled-components'
 
 interface StoryCreateModalProps {
+  onSubmit: (ev: React.FormEvent) => void;
   handleCreateModalClose: (ev: React.MouseEvent) => void;
 }
 
 const StoryCreateModal: FC<StoryCreateModalProps> = ({
+  onSubmit,
   handleCreateModalClose
 }) => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const target = e.target as typeof e.target & {
-      title: { value: string };
-      date: { value: string };
-      body: { value: string };
-    };
-
-    const title = target.title.value;
-    const date = target.date.value;
-    const body = target.body.value;
-
-    alert(JSON.stringify({ title, date, body }, null, 2));
-  }
-
   return (
     <>
       <GenericModal handleClose={handleCreateModalClose}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <FormControl>
             <FormLabel>
               Title
