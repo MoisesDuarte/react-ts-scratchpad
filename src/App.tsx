@@ -4,10 +4,23 @@ import styled from 'styled-components'
 import StoryPreviewModal from './components/StoryPreviewModal'
 import StoryCreateModal from './components/StoryCreateModal'
 
+// TODO: Move typing to dedicated folder later
+interface Story {
+  title: string;
+  date: string;
+  body: string;
+}
+
 const App = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [stories, setStories] = useState([]);
+  const [stories, setStories] = useState<Story[]>([
+    {
+      title: 'Title',
+      date: '00/00/00',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    }
+  ]);
 
   function onAddStory(e: React.FormEvent): void {
     e.preventDefault();
@@ -18,13 +31,16 @@ const App = () => {
       body: { value: string };
     };
 
-    const newStory = {
-      title: target.title.value,
-      date: target.date.value,
-      body: target.body.value
-    }
+    setStories((prevProps) => ([
+      ...prevProps,
+      {
+        title: target.title.value,
+        date: target.date.value,
+        body: target.body.value
+      }
+    ]));
 
-    alert(JSON.stringify(newStory, null, 2));
+    alert(JSON.stringify(stories));
   }
 
   return (
@@ -38,20 +54,17 @@ const App = () => {
         </AppBar>
 
         <StoryGrid>
-          <StoryItem onClick={() => setShowPreviewModal(true)}>
-            <h1>Title</h1>
-            <time>00/00/00 - 00:00h</time>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non enim
-              purus. Mauris tincidunt dolor sapien. Ut tincidunt cursus iaculis. Aliquam
-              in sagittis mauris, quis malesuada diam. Phasellus pulvinar dictum mi, 
-              non congue lorem tristique vitae. Quisque aliquet mauris in metus vestibulum, 
-              sit amet venenatis nulla aliquam. Fusce ac urna in purus tristique 
-              condimentum eu eget odio. Cras posuere fringilla orci vestibulum ultrices.
-              Integer suscipit, erat pharetra malesuada scelerisque, tellus tortor auctor
-              libero, sit amet pretium ante dolor sit amet nibh.
-            </p>
-          </StoryItem>
+          { 
+            stories.length ? (stories.map((story) => {
+              return (
+                <StoryItem onClick={() => setShowPreviewModal(true)}>
+                  <h1>{ story.title }</h1>
+                  <time>{ story.date }</time>
+                  <p>{ story.body }</p>
+                </StoryItem>
+              )
+            })) : ( <p>No stories to show</p> )
+          }
         </StoryGrid>
 
         { 
