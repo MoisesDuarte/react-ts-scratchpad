@@ -1,10 +1,10 @@
-import React, { FC, useState } from 'react'
+import { FC, FormEvent, MouseEvent } from 'react'
 import GenericModal from './GenericModal'
 import styled from 'styled-components'
 
 interface StoryCreateModalProps {
-  onSubmit: (ev: React.FormEvent) => void;
-  handleCreateModalClose: (ev: React.MouseEvent) => void;
+  onSubmit: (ev: FormEvent) => void;
+  handleCreateModalClose: (ev: MouseEvent) => void;
 }
 
 const StoryCreateModal: FC<StoryCreateModalProps> = ({

@@ -1,19 +1,16 @@
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
 import styled from 'styled-components'
+import { RiDeleteBin2Fill } from "react-icons/ri";
 
 import StoryPreviewModal from './components/StoryPreviewModal'
 import StoryCreateModal from './components/StoryCreateModal'
 
-// TODO: Move typing to dedicated folder later
-interface Story {
-  title: string;
-  date: string;
-  body: string;
-}
+import { Story } from './types/story'
 
 const App = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [stories, setStories] = useState<Story[]>([
     {
       title: 'Title',
@@ -22,7 +19,7 @@ const App = () => {
     }
   ]);
 
-  function onAddStory(e: React.FormEvent): void {
+  function onAddStory(e: FormEvent): void {
     e.preventDefault();
 
     const target = e.target as typeof e.target & {
@@ -40,7 +37,12 @@ const App = () => {
       }
     ]));
 
-    alert(JSON.stringify(stories));
+    setShowCreateModal(false);
+  }
+
+  function onPreviewStory(index: number): void {
+    setCurrentStoryIndex(index);
+    setShowPreviewModal(true);
   }
 
   return (
@@ -55,9 +57,12 @@ const App = () => {
 
         <StoryGrid>
           { 
-            stories.length ? (stories.map((story) => {
+            stories.length ? (stories.map((story, index) => {
               return (
-                <StoryItem onClick={() => setShowPreviewModal(true)}>
+                <StoryItem onClick={() => onPreviewStory(index)}>
+                  <button className="delete-button">
+                    <RiDeleteBin2Fill />
+                  </button>
                   <h1>{ story.title }</h1>
                   <time>{ story.date }</time>
                   <p>{ story.body }</p>
@@ -79,6 +84,7 @@ const App = () => {
           showPreviewModal ? 
             <StoryPreviewModal 
               handlePreviewModalClose={() => setShowPreviewModal(false) } 
+              storyContent={stories[currentStoryIndex]}
             /> : null 
         }
       </main>
@@ -118,6 +124,7 @@ const StoryGrid = styled.section`
 `
 
 const StoryItem = styled.div`
+  position: relative;
   border-radius: 4px;
   background-color: var(--color-secondary);
   padding: 1rem;
@@ -126,6 +133,20 @@ const StoryItem = styled.div`
   transition: box-shadow 0.25s;
 
   & > {
+    button.delete-button {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0;
+      font-size: 24px;
+
+      border: none;
+      background-color: transparent;
+      color: var(--color-text);
+    }
+
     h1 {
       margin: 0;
     }
