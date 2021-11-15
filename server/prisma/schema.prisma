@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ? Migrations
+model Note {
+  id Int @id @default(autoincrement())
+  date DateTime @default(now())
+  title String @db.VarChar(255)
+  body String?
+}
