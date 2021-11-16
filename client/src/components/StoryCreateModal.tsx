@@ -1,6 +1,6 @@
-import { FC, FormEvent, MouseEvent } from 'react'
-import GenericModal from './GenericModal'
-import styled from 'styled-components'
+import { FC, FormEvent, MouseEvent } from 'react';
+import GenericModal from './GenericModal';
+import styled from 'styled-components';
 
 interface StoryCreateModalProps {
   onSubmit: (ev: FormEvent) => void;

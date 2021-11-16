@@ -1,8 +1,9 @@
-import { FC, MouseEvent } from 'react'
-import styled from 'styled-components'
-import GenericModal from './GenericModal'
+import { FC, MouseEvent } from 'react';
+import styled from 'styled-components';
 
-import { Story } from '../types/story'
+import GenericModal from './GenericModal';
+
+import { Story } from '../types/story';
 
 interface StoryPreviewModalProps {
   handlePreviewModalClose: (ev: MouseEvent) => void;

@@ -1,33 +1,31 @@
-import { useState, FormEvent, MouseEvent } from 'react'
-import styled from 'styled-components'
+import { useState, useEffect, FormEvent, MouseEvent } from 'react';
 import { RiDeleteBin2Fill } from "react-icons/ri";
 
-import StoryPreviewModal from './components/StoryPreviewModal'
-import StoryCreateModal from './components/StoryCreateModal'
+import styled from 'styled-components';
+import axios from 'axios';
 
-import { Story } from './types/story'
+import StoryPreviewModal from './components/StoryPreviewModal';
+import StoryCreateModal from './components/StoryCreateModal';
+
+import { Story } from './types/story';
 
 const App = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-  const [stories, setStories] = useState<Story[]>([
-    {
-      title: 'Title A',
-      date: '00/00/00',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-      title: 'Title B',
-      date: '00/00/00',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-      title: 'Title C',
-      date: '00/00/00',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-  ]);
+  const [stories, setStories] = useState<Story[]>([]);
+
+  useEffect(() => {
+    const baseUrl = import.meta.env.VITE_API_HOST;
+
+    axios.get(`${baseUrl}/note`)
+      .then((response) => {
+        setStories(response.data);
+      })
+      .catch((err) => {
+        console.info('error', err);
+      });
+  }, []);
 
   function onAddStory(e: FormEvent): void {
     e.preventDefault();

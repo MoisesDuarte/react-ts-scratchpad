@@ -1,5 +1,5 @@
-import { MouseEvent, ReactNode, FC } from 'react'
-import styled from 'styled-components'
+import { MouseEvent, ReactNode, FC } from 'react';
+import styled from 'styled-components';
 
 interface GenericModalProps {
   handleClose: (ev: MouseEvent) => void;

@@ -3,8 +3,11 @@ import express from 'express'
 
 const prisma = new PrismaClient()
 const app = express()
+const cors = require('cors')
 
 app.use(express.json())
+
+app.use(cors())
 
 app.get('/', async (req, res) => {
   res.send('Server is online')
