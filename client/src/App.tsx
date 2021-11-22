@@ -17,9 +17,7 @@ const App = () => {
   const [stories, setStories] = useState<Story[]>([]);
 
   useEffect(() => {
-    NoteResource.getNotes().then((data) => {
-      setStories(data);
-    });
+    fetchStories();
   }, []);
 
   function onAddStory(e: FormEvent): void {
@@ -31,14 +29,9 @@ const App = () => {
       body: { value: string };
     };
 
-    setStories((prevStories) => ([
-      ...prevStories,
-      {
-        title: target.title.value,
-        date: target.date.value,
-        body: target.body.value
-      }
-    ]));
+    NoteResource.addNote(target.title.value, target.date.value, target.body.value).then(() => {
+      fetchStories();
+    });
 
     setShowCreateModal(false);
   }
@@ -48,14 +41,20 @@ const App = () => {
     setShowPreviewModal(true);
   }
 
-  function onDeleteStory(e: MouseEvent, deleteIndex: number) {
+  function onDeleteStory(e: MouseEvent, id: number) {
     e.stopPropagation();
 
     if (window.confirm('Do you really want to delete this story?')) {
-      setStories((prevStories,) => ([
-        ...prevStories.filter((e, index) => index !== deleteIndex)
-      ]));
+      NoteResource.deleteNote(id).then(() => {
+        fetchStories();
+      });
     }
+  }
+
+  function fetchStories() {
+    NoteResource.getNotes().then((data) => {
+      setStories(data);
+    });
   }
 
   return (
@@ -73,7 +72,7 @@ const App = () => {
             stories.length ? (stories.map((story, index) => {
               return (
                 <StoryItem onClick={() => onPreviewStory(index)} key={index}>
-                  <button className="delete-button" onClick={(e) => onDeleteStory(e, index)}>
+                  <button className="delete-button" onClick={(e) => onDeleteStory(e, story.id)}>
                     <RiDeleteBin2Fill />
                   </button>
                   <h1>{ story.title }</h1>
