@@ -1,12 +1,17 @@
 import axios from 'axios';
+import { Story } from '../types/story';
 
 class NoteResource {
-  baseUrl = '';
+  baseUrl = import.meta.env.VITE_API_HOST;
 
-  getNotes() {
-    axios.get(`${this.baseUrl}/note`)
-      .then(response => response.data)
-      .catch(err => err);
+  async getNotes(): Promise<Story[]> {
+    try {
+      const response = await axios.get(`${this.baseUrl}/note`);
+      return response.data;
+    } catch (error) {
+      console.error('error fetching notes', error);
+      return [];
+    }
   }
 };
 

@@ -7,6 +7,7 @@ import axios from 'axios';
 import StoryPreviewModal from './components/StoryPreviewModal';
 import StoryCreateModal from './components/StoryCreateModal';
 
+import NoteResource from './resources/NoteResource';
 import { Story } from './types/story';
 
 const App = () => {
@@ -16,15 +17,9 @@ const App = () => {
   const [stories, setStories] = useState<Story[]>([]);
 
   useEffect(() => {
-    const baseUrl = import.meta.env.VITE_API_HOST;
-
-    axios.get(`${baseUrl}/note`)
-      .then((response) => {
-        setStories(response.data);
-      })
-      .catch((err) => {
-        console.info('error', err);
-      });
+    NoteResource.getNotes().then((data) => {
+      setStories(data);
+    });
   }, []);
 
   function onAddStory(e: FormEvent): void {
